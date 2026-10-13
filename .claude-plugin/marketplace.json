@@ -34,6 +34,21 @@
         "pane",
         "activity"
       ]
+    },
+    {
+      "name": "browser-trail",
+      "source": "./plugins/browser-trail",
+      "description": "Live timeline of the browser tool calls Claude makes while testing a web app (Playwright MCP, Chrome DevTools MCP, Claude in Chrome, agent-browser): action, target, page, OK/ERROR/TIMEOUT and duration. Observed vs correlated facts are marked, and inputs are redacted. Observe-only.",
+      "version": "1.0.0",
+      "category": "visibility",
+      "keywords": [
+        "browser",
+        "playwright",
+        "chrome",
+        "testing",
+        "pane",
+        "live"
+      ]
     }
   ]
 }

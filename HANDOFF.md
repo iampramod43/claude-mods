@@ -65,6 +65,15 @@ A live repo tree pane and `/file-trail [clear]`.
 - **Safety:** the hook only observes. `.catch(($, e, next) => next(e))` means a failure inside file-trail never blocks or reruns a tool call.
 - **Root:** the session's cwd. Paths outside it are only counted ("+N outside the repo").
 
+### browser-trail 1.0.0
+
+A live pane of browser tool calls and `/browser-trail [all|clear]`. Built 2026-10-13 from `browser-trail-implementation-spec.md`. The full findings, capability matrix and privacy notes are in `plugins/browser-trail/README.md`.
+
+- **Source:** the same observe-only `tool.call` hook as file-trail. Adapters (`hooks/adapters.ts`) classify Playwright MCP `browser_*`, Chrome DevTools MCP, Claude in Chrome, and Bash `agent-browser`/`playwright test` (inferred).
+- **Validated live with Claude in Chrome** (extension in Windows Chrome, Claude Code in WSL2). Captured payloads are in the tests. Playwright MCP and Chrome DevTools MCP are still unvalidated.
+- **UI:** a single-column design the user supplied as a mock-up: header and pill, filled cards, a dot-and-line timeline with a title and detail per call, a failure callout, and an inspect screen. `hooks/pane.tsx` draws; `hooks/view.ts` holds the pure layout, telemetry, label and failure logic. Short mode comes from `scroll.bodyRows`. The dock is about 62 columns here (`pluginPanes.dockColumns: 63` in `~/.claude.json` wins over the pane's 120-column request), and the design is built for that width. Checked in a real terminal by running `claude --plugin-dir plugins/browser-trail` in tmux and capturing the screen (`tmux capture-pane -p`). Remember to send `C-m` to submit a typed prompt.
+- Redaction (`hooks/redact.ts`) masks every typed value and every sensitive key, URL parameter and token before anything is stored. The trail is session-only, at most 200 events.
+
 ## Developing a mod from this repo
 
 1. **Write the mod.** Load the `plugin-authoring` skill. It holds the API, examples and the full types file, about 14k lines; grep it for the event or noun you need.

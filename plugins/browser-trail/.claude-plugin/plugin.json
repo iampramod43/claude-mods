@@ -1,0 +1,7 @@
+{
+  "name": "browser-trail",
+  "version": "1.0.0",
+  "description": "Live timeline of the browser tool calls Claude makes while testing a web app: action, target, page, status and duration, with redaction",
+  "author": { "name": "pramod" },
+  "types": "./types/index.d.ts"
+}

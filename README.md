@@ -28,6 +28,7 @@ then `/reload-plugins` in an open session.
 | --- | --- |
 | [burn-meter](plugins/burn-meter) | Live pane showing session spend, $/h burn rate with a 1-hour sparkline, an optional budget with alerts (`/burn-meter budget 10`), tokens and estimated cost per model, context fill and rate-limit reset countdowns. |
 | [file-trail](plugins/file-trail) | Live repo file tree that lights up each file Claude reads (R), edits (E), writes (W) or searches (S) as it works. `/file-trail clear` resets it. |
+| [browser-trail](plugins/browser-trail) | Live timeline of the browser tool calls Claude makes while testing a web app: action, target, page, status and duration, with redaction. `/browser-trail` opens it, `/browser-trail all` records every tool call. See its [README](plugins/browser-trail/README.md) for what is and is not observable. |
 
 Per-model costs in burn-meter are estimates from list prices; the session total is Claude Code's own figure.
 
