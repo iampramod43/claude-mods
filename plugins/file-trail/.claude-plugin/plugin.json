@@ -1,0 +1,7 @@
+{
+  "name": "file-trail",
+  "version": "1.0.0",
+  "description": "Live file tree of the repo that lights up each file Claude reads, edits, writes or searches",
+  "author": { "name": "pramod" },
+  "types": "./types/index.d.ts"
+}

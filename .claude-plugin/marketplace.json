@@ -1,7 +1,11 @@
 {
   "name": "claude-mods",
-  "owner": { "name": "pramod" },
-  "metadata": { "description": "Mods for Claude Code" },
+  "owner": {
+    "name": "pramod"
+  },
+  "metadata": {
+    "description": "Mods for Claude Code"
+  },
   "plugins": [
     {
       "name": "burn-meter",
@@ -9,7 +13,27 @@
       "description": "Live pane showing session spend, $/h burn rate with a 1-hour sparkline, an optional budget with alerts, tokens and estimated cost per model, context fill and rate-limit reset countdowns.",
       "version": "1.0.0",
       "category": "monitoring",
-      "keywords": ["cost", "tokens", "budget", "status line", "pane"]
+      "keywords": [
+        "cost",
+        "tokens",
+        "budget",
+        "status line",
+        "pane"
+      ]
+    },
+    {
+      "name": "file-trail",
+      "source": "./plugins/file-trail",
+      "description": "Live repo file tree that lights up each file and folder Claude reads, edits, writes or searches, as it happens. Opens only the branches Claude touched, with R/E/W/S marks and counts.",
+      "version": "1.0.0",
+      "category": "visibility",
+      "keywords": [
+        "files",
+        "tree",
+        "live",
+        "pane",
+        "activity"
+      ]
     }
   ]
 }
