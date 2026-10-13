@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Mods</title>
+<meta name="description" content="Mods for Claude Code: browse and copy the one-line install command.">
+<style>
+  :root {
+    --bg: #f7f6f3;
+    --surface: #ffffff;
+    --border: #e4e1da;
+    --text: #1f1e1c;
+    --muted: #6b675f;
+    --accent: #c4552d;
+    --accent-soft: #f6e4dc;
+    --code-bg: #f1efea;
+    --ok: #2f7d4f;
+    --shadow: 0 1px 2px rgba(0,0,0,.04), 0 4px 16px rgba(0,0,0,.04);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #161514;
+      --surface: #1f1e1c;
+      --border: #33312d;
+      --text: #ece9e3;
+      --muted: #9c978d;
+      --accent: #e57a52;
+      --accent-soft: #3a2820;
+      --code-bg: #2a2825;
+      --ok: #6cc28d;
+      --shadow: none;
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 48px 20px 64px; }
+  header h1 { margin: 0 0 6px; font-size: 28px; letter-spacing: -.01em; }
+  header h1 span { color: var(--accent); }
+  header p { margin: 0; color: var(--muted); max-width: 60ch; }
+  code, pre, .cmd { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; }
+
+  .how {
+    margin: 28px 0 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .step { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .step b { display: block; margin-bottom: 4px; }
+  .step p { margin: 0; color: var(--muted); font-size: 14px; }
+  .step code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; color: var(--text); }
+
+  .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
+  .toolbar input {
+    flex: 1 1 240px;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+  }
+  .toolbar input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .count { color: var(--muted); font-size: 14px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); gap: 16px; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 18px 16px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .card-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .card h2 { margin: 0; font-size: 18px; }
+  .ver { color: var(--muted); font-size: 13px; }
+  .chip {
+    margin-left: auto;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 999px;
+    padding: 2px 10px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .desc { margin: 0; color: var(--text); }
+  .tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag { font-size: 12px; color: var(--muted); border: 1px solid var(--border); border-radius: 6px; padding: 1px 7px; }
+
+  .install { display: flex; align-items: stretch; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-top: auto; }
+  .cmd { flex: 1; min-width: 0; background: var(--code-bg); padding: 10px 12px; overflow-x: auto; white-space: nowrap; }
+  .copy {
+    border: 0;
+    border-left: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    padding: 0 14px;
+    font: 600 13px/1 ui-sans-serif, system-ui, sans-serif;
+    cursor: pointer;
+    min-width: 76px;
+  }
+  .copy:hover { background: var(--accent-soft); color: var(--accent); }
+  .copy.done { color: var(--ok); }
+  .links { display: flex; gap: 14px; font-size: 13px; }
+  .links a { color: var(--muted); }
+  .links a:hover { color: var(--accent); }
+
+  .empty, .error { color: var(--muted); padding: 32px 0; text-align: center; }
+  footer { margin-top: 40px; color: var(--muted); font-size: 13px; }
+  footer code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Claude <span>Mods</span></h1>
+    <p>Panes, status lines and hooks for Claude Code. Copy a command, paste it at the Claude Code prompt in your terminal, and the mod is live.</p>
+  </header>
+
+  <section class="how" aria-label="How to install">
+    <div class="step"><b>1 · Copy</b><p>Pick a mod below and copy its install command.</p></div>
+    <div class="step"><b>2 · Paste in Claude Code</b><p>Answer <code>y</code> to add the marketplace (first time only), then Enter for user scope.</p></div>
+    <div class="step"><b>3 · Update later</b><p><code>claude plugin update &lt;mod&gt;</code>, then <code>/reload-plugins</code>.</p></div>
+  </section>
+
+  <div class="toolbar">
+    <input id="q" type="search" placeholder="Search mods…" aria-label="Search mods">
+    <span class="count" id="count"></span>
+  </div>
+
+  <main id="grid" class="grid" aria-live="polite"></main>
+
+  <footer id="footer"></footer>
+</div>
+
+<script>
+  // Owner and repo come from the GitHub Pages URL (<owner>.github.io/<repo>/);
+  // the fallback covers opening the file locally.
+  const FALLBACK = { owner: 'iampramod43', repo: 'claude-mods' }
+
+  const source = (() => {
+    const m = location.hostname.match(/^([^.]+)\.github\.io$/i)
+    const repo = location.pathname.split('/').filter(Boolean)[0]
+    return m && repo ? { owner: m[1], repo } : FALLBACK
+  })()
+  const slug = `${source.owner}/${source.repo}`
+  const repoUrl = `https://github.com/${slug}`
+
+  const el = (tag, cls, text) => {
+    const n = document.createElement(tag)
+    if (cls) n.className = cls
+    if (text != null) n.textContent = text
+    return n
+  }
+
+  async function copy(text, button) {
+    try {
+      await navigator.clipboard.writeText(text)
+    } catch {
+      const t = el('textarea')
+      t.value = text
+      document.body.append(t)
+      t.select()
+      document.execCommand('copy')
+      t.remove()
+    }
+    button.textContent = 'Copied'
+    button.classList.add('done')
+    setTimeout(() => { button.textContent = 'Copy'; button.classList.remove('done') }, 1600)
+  }
+
+  function card(p) {
+    const c = el('article', 'card')
+    c.dataset.search = [p.name, p.description, p.category, ...(p.keywords || [])].join(' ').toLowerCase()
+
+    const head = el('div', 'card-head')
+    head.append(el('h2', null, p.name))
+    if (p.version) head.append(el('span', 'ver', `v${p.version}`))
+    if (p.category) head.append(el('span', 'chip', p.category))
+    c.append(head)
+
+    if (p.description) c.append(el('p', 'desc', p.description))
+
+    if (p.keywords?.length) {
+      const tags = el('div', 'tags')
+      p.keywords.forEach(k => tags.append(el('span', 'tag', k)))
+      c.append(tags)
+    }
+
+    const command = `/plugin install ${p.name} --marketplace ${slug}`
+    const install = el('div', 'install')
+    install.append(el('code', 'cmd', command))
+    const btn = el('button', 'copy', 'Copy')
+    btn.type = 'button'
+    btn.setAttribute('aria-label', `Copy install command for ${p.name}`)
+    btn.addEventListener('click', () => copy(command, btn))
+    install.append(btn)
+    c.append(install)
+
+    if (typeof p.source === 'string' && p.source.startsWith('./')) {
+      const links = el('div', 'links')
+      const a = el('a', null, 'Source')
+      a.href = `${repoUrl}/tree/main/${p.source.slice(2)}`
+      links.append(a)
+      c.append(links)
+    }
+    return c
+  }
+
+  async function main() {
+    const grid = document.getElementById('grid')
+    const footer = document.getElementById('footer')
+    footer.innerHTML = ''
+    footer.append('Marketplace ', Object.assign(el('code', null, slug)), ' · ')
+    const gh = el('a', null, 'GitHub')
+    gh.href = repoUrl
+    footer.append(gh)
+
+    let data
+    try {
+      const res = await fetch('.claude-plugin/marketplace.json', { cache: 'no-cache' })
+      if (!res.ok) throw new Error(res.status)
+      data = await res.json()
+    } catch {
+      grid.replaceWith(el('p', 'error', 'Could not load the mod list. Open this page from GitHub Pages, or serve the folder locally.'))
+      return
+    }
+
+    const plugins = [...(data.plugins || [])].sort((a, b) => a.name.localeCompare(b.name))
+    const cards = plugins.map(card)
+    grid.append(...cards)
+
+    const q = document.getElementById('q')
+    const count = document.getElementById('count')
+    const empty = el('p', 'empty', 'No mods match.')
+    const filter = () => {
+      const term = q.value.trim().toLowerCase()
+      let shown = 0
+      cards.forEach(c => {
+        const hit = !term || c.dataset.search.includes(term)
+        c.hidden = !hit
+        if (hit) shown++
+      })
+      count.textContent = `${shown} of ${cards.length} mod${cards.length === 1 ? '' : 's'}`
+      if (!shown) grid.append(empty)
+      else empty.remove()
+    }
+    q.addEventListener('input', filter)
+    filter()
+  }
+
+  main()
+</script>
+</body>
+</html>

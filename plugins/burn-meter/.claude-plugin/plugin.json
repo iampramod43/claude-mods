@@ -1,0 +1,7 @@
+{
+  "name": "burn-meter",
+  "version": "1.0.0",
+  "description": "Live pane and status entry showing session cost, $/hr burn rate, tokens, context fill and rate limits",
+  "author": { "name": "pramod" },
+  "types": "./types/index.d.ts"
+}
