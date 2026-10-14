@@ -2,7 +2,7 @@
 
 Context for picking this repo up in a new Claude Code session. Start the session from this folder (`cd ~/work/claude-mods && claude`) and point Claude at this file.
 
-Last updated: 2026-10-13.
+Last updated: 2026-10-14.
 
 ## What this is
 
@@ -73,6 +73,14 @@ A live pane of browser tool calls and `/browser-trail [all|clear]`. Built 2026-1
 - **Validated live with Claude in Chrome** (extension in Windows Chrome, Claude Code in WSL2). Captured payloads are in the tests. Playwright MCP and Chrome DevTools MCP are still unvalidated.
 - **UI:** a single-column design the user supplied as a mock-up: header and pill, filled cards, a dot-and-line timeline with a title and detail per call, a failure callout, and an inspect screen. `hooks/pane.tsx` draws; `hooks/view.ts` holds the pure layout, telemetry, label and failure logic. Short mode comes from `scroll.bodyRows`. The dock is about 62 columns here (`pluginPanes.dockColumns: 63` in `~/.claude.json` wins over the pane's 120-column request), and the design is built for that width. Checked in a real terminal by running `claude --plugin-dir plugins/browser-trail` in tmux and capturing the screen (`tmux capture-pane -p`). Remember to send `C-m` to submit a typed prompt.
 - Redaction (`hooks/redact.ts`) masks every typed value and every sensitive key, URL parameter and token before anything is stored. The trail is session-only, at most 200 events.
+
+### model-pilot 0.1.0
+
+A dashboard pane and `/model-pilot [plan|approve|cancel|retry|models|mode|pin|budget|motion]` that route a task to a model or a team of subagents. Built 2026-10-13 from `model-pilot-implementation-spec.md`. The findings, architecture and limits are in `plugins/model-pilot/README.md`.
+
+- **Spawns** use `$.agent.spawn` with a registered read-only worker type; results come back on `turn.complete` by `agentId`. Shared context goes through the mod's own `mcp__model-pilot__*` artifact tools.
+- **Verified live** with three Haiku workers (two parallel plus one integration agent). In **auto** permission mode the classifier refuses mod-started spawns, so orchestration needs the default mode.
+- Released as 0.1.0 (a vertical slice), not 1.0.0.
 
 ## Developing a mod from this repo
 

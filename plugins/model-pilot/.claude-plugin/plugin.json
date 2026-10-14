@@ -1,0 +1,7 @@
+{
+  "name": "model-pilot",
+  "version": "0.1.0",
+  "description": "Routes a task to a fit model or a small team of subagents, shares context through a versioned artifact store, and shows it all live: radial progress, agent lanes and a data-flow graph",
+  "author": { "name": "pramod" },
+  "types": "./types/index.d.ts"
+}

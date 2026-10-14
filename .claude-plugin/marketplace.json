@@ -49,6 +49,22 @@
         "pane",
         "live"
       ]
+    },
+    {
+      "name": "model-pilot",
+      "source": "./plugins/model-pilot",
+      "description": "Routes a task to a fitting model, or to a small team of subagents when it splits into independent parts. Agents share context through a versioned artifact store, and a live dashboard shows radial progress, agent lanes, a data-flow graph and the router's reasoning. Nothing starts before you approve in recommend mode.",
+      "version": "0.1.0",
+      "category": "orchestration",
+      "keywords": [
+        "agents",
+        "subagents",
+        "routing",
+        "models",
+        "orchestration",
+        "pane",
+        "live"
+      ]
     }
   ]
 }
