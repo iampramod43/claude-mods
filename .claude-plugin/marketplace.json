@@ -69,8 +69,8 @@
     {
       "name": "worktree-deck",
       "source": "./plugins/worktree-deck",
-      "description": "Live pane of every git worktree in the repo: branch, changes, ahead/behind main, last commit, and what the Claude session in each one is doing right now (working, stalled, your turn, idle), with toasts when another worktree's Claude finishes.",
-      "version": "0.1.0",
+      "description": "Live dashboard of every git worktree and the Claude sessions in it: a 10-state session machine fed by hooks and incremental transcript tailing, current tool, live activity stream, permission requests, subagents, and a session inspector, with toasts when another worktree needs you.",
+      "version": "0.2.0",
       "category": "visibility",
       "keywords": [
         "git",

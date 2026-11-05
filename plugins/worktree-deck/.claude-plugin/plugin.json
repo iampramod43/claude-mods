@@ -1,7 +1,15 @@
 {
   "name": "worktree-deck",
-  "version": "0.1.0",
-  "description": "Live pane of every git worktree in the repo: branch, changes, ahead/behind, last commit, and what the Claude session in each one is doing right now",
+  "version": "0.2.0",
+  "description": "Live dashboard of every git worktree and the Claude sessions in it: state, current tool, activity stream, approvals, subagents, and a session inspector",
   "author": { "name": "pramod" },
-  "types": "./types/index.d.ts"
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "historySize": {
+      "type": "number",
+      "title": "Event history per session",
+      "description": "How many events each session keeps for the activity stream and inspector (20–1000)",
+      "default": 150
+    }
+  }
 }

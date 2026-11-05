@@ -1,17 +1,17 @@
 import { describe, expect, test } from 'claude-code/testing'
 
 import {
-  activityOf,
+  deepestRoot,
   describeTool,
   displayPath,
+  duration,
   encodeProject,
-  IDLE_MS,
   parseLastCommit,
   parseLeftRight,
   parseShortstat,
   parseStatus,
-  parseTranscript,
   parseWorktreeList,
+  utf8Length,
 } from './deck'
 
 describe('parseWorktreeList', () => {
@@ -96,64 +96,17 @@ describe('small parsers', () => {
     expect(describeTool('Bash', { command: 'npm test', description: 'Run tests' })).toBe('Bash Run tests')
     expect(describeTool('mcp__github__create_pr', {})).toBe('github · create_pr')
   })
-})
 
-const line = (r: unknown) => JSON.stringify(r)
-
-describe('parseTranscript', () => {
-  test('a cut first line, title, prompt, then a tool in flight', async () => {
-    const text = [
-      'tail-cut garbage"}',
-      line({ type: 'ai-title', aiTitle: 'Add retry logic' }),
-      line({ type: 'user', message: { content: 'make retries exponential' } }),
-      line({ type: 'user', isMeta: true, message: { content: 'meta stuff' } }),
-      line({ type: 'assistant', message: { content: [{ type: 'text', text: 'On it.' }] } }),
-      line({ type: 'assistant', message: { content: [{ type: 'tool_use', name: 'Edit', input: { file_path: '/r/src/up.ts' } }] } }),
-    ].join('\n')
-    const t = parseTranscript(text)
-    expect(t.title).toBe('Add retry logic')
-    expect(t.prompt).toBe('make retries exponential')
-    expect(t.tool).toBe('Edit src/up.ts')
-    expect(t.said).toBe('On it.')
-    expect(t.last).toBe('tool')
-  })
-
-  test('tool results and system-tag prompts are not prompts; a final answer ends the turn', async () => {
-    const t = parseTranscript(
-      [
-        line({ type: 'user', message: { content: [{ type: 'text', text: 'real prompt' }] } }),
-        line({ type: 'user', message: { content: [{ type: 'tool_result', content: 'x' }] } }),
-        line({ type: 'user', message: { content: '<command-name>/clear</command-name>' } }),
-        line({ type: 'assistant', message: { content: [{ type: 'text', text: 'Done.\nAll green.' }] } }),
-      ].join('\n'),
-    )
-    expect(t.prompt).toBe('real prompt')
-    expect(t.said).toBe('Done. All green.')
-    expect(t.last).toBe('text')
-  })
-
-  test('an interrupt and a subagent sidechain', async () => {
-    const t = parseTranscript(
-      [
-        line({ type: 'user', message: { content: [{ type: 'text', text: '[Request interrupted by user]' }] } }),
-        line({ type: 'assistant', isSidechain: true, message: { content: [{ type: 'tool_use', name: 'Read', input: {} }] } }),
-      ].join('\n'),
-    )
-    expect(t.last).toBe('interrupt')
-    expect(t.tool).toBeUndefined()
+  test('deepest root, durations, byte length', async () => {
+    const roots = ['/r', '/r/.wt/feat', '/r-other']
+    expect(deepestRoot('/r/.wt/feat/src', roots)).toBe('/r/.wt/feat')
+    expect(deepestRoot('/r/src', roots)).toBe('/r')
+    expect(deepestRoot('/r-other', roots)).toBe('/r-other')
+    expect(deepestRoot('/elsewhere', roots)).toBeUndefined()
+    expect(duration(840)).toBe('840ms')
+    expect(duration(3200)).toBe('3.2s')
+    expect(duration(250_000)).toBe('4m 10s')
+    expect(utf8Length('aé→😀')).toBe(1 + 2 + 3 + 4)
   })
 })
 
-describe('activityOf', () => {
-  const now = 10_000_000
-  test('each state', async () => {
-    expect(activityOf(undefined, now, now)).toBe('none')
-    expect(activityOf('tool', now - 5000, now)).toBe('working')
-    expect(activityOf('result', now - 5000, now)).toBe('working')
-    expect(activityOf('tool', now - 60_000, now)).toBe('pending')
-    expect(activityOf('text', now - 5000, now)).toBe('waiting')
-    expect(activityOf('interrupt', now - 5000, now)).toBe('waiting')
-    expect(activityOf('prompt', now - 5 * 60_000, now)).toBe('idle')
-    expect(activityOf('text', now - IDLE_MS - 1, now)).toBe('idle')
-  })
-})
