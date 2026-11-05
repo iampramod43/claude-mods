@@ -65,6 +65,21 @@
         "pane",
         "live"
       ]
+    },
+    {
+      "name": "worktree-deck",
+      "source": "./plugins/worktree-deck",
+      "description": "Live pane of every git worktree in the repo: branch, changes, ahead/behind main, last commit, and what the Claude session in each one is doing right now (working, stalled, your turn, idle), with toasts when another worktree's Claude finishes.",
+      "version": "0.1.0",
+      "category": "visibility",
+      "keywords": [
+        "git",
+        "worktrees",
+        "sessions",
+        "parallel",
+        "pane",
+        "live"
+      ]
     }
   ]
 }

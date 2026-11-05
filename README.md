@@ -30,6 +30,7 @@ then `/reload-plugins` in an open session.
 | [file-trail](plugins/file-trail) | Live repo file tree that lights up each file Claude reads (R), edits (E), writes (W) or searches (S) as it works. `/file-trail clear` resets it. |
 | [browser-trail](plugins/browser-trail) | Live timeline of the browser tool calls Claude makes while testing a web app: action, target, page, status and duration, with redaction. `/browser-trail` opens it, `/browser-trail all` records every tool call. See its [README](plugins/browser-trail/README.md) for what is and is not observable. |
 | [model-pilot](plugins/model-pilot) | Routes a task to a fitting model or a small team of subagents and shows it live: radial progress, agent lanes, a data-flow graph of shared artifacts. `/model-pilot plan <task>`, then `/model-pilot approve`. Needs the default permission mode to launch agents; see its [README](plugins/model-pilot/README.md). |
+| [worktree-deck](plugins/worktree-deck) | Live pane of every git worktree: branch, changes, ahead/behind main, last commit, and what the Claude session in each is doing (working, stalled, your turn, idle). Toasts when another worktree's Claude finishes. `/worktree-deck`, `/worktree-deck files`. |
 
 Per-model costs in burn-meter are estimates from list prices; the session total is Claude Code's own figure.
 

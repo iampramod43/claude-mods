@@ -1,0 +1,7 @@
+{
+  "name": "worktree-deck",
+  "version": "0.1.0",
+  "description": "Live pane of every git worktree in the repo: branch, changes, ahead/behind, last commit, and what the Claude session in each one is doing right now",
+  "author": { "name": "pramod" },
+  "types": "./types/index.d.ts"
+}
